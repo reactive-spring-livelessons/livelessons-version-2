@@ -150,26 +150,10 @@ class RSocketSecurityConfiguration {
   MapReactiveUserDetailsService userDetailsService() {
     UserDetails user = User.withDefaultPasswordEncoder()
         .username("user")
-        .password("user")
+        .password("password")
         .roles("USER")
         .build();
     return new MapReactiveUserDetailsService(user);
   }
 
-}
-
-@Data
-@AllArgsConstructor
-class Now {
-
-  private long now;
-
-  public Now() {
-    this(new Date());
-  }
-
-  public Now(Date date) {
-    Assert.isTrue(date != null, "the date must not be null");
-    this.now = date.getTime();
-  }
 }
