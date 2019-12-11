@@ -1,9 +1,7 @@
 package com.example.rsocketclient;
 
-import io.rsocket.RSocket;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import greetings.GreetingRequest;
+import greetings.GreetingResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,7 +11,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.PayloadApplicationEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.rsocket.RSocketRequester;
-import org.springframework.messaging.rsocket.RSocketStrategies;
 import org.springframework.security.rsocket.metadata.BasicAuthenticationEncoder;
 import org.springframework.security.rsocket.metadata.UsernamePasswordMetadata;
 
@@ -68,16 +65,3 @@ public class RsocketClientApplication {
   }
 }
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-class GreetingRequest {
-  private String name;
-}
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-class GreetingResponse {
-  private String message;
-}
