@@ -17,7 +17,7 @@
     <properties>
         <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
         <spring-cloud-rsocket.version>0.2.0.BUILD-SNAPSHOT</spring-cloud-rsocket.version>
-        <java.version>13</java.version>
+        <java.version>11</java.version>
     </properties>
 
     <dependencies>
