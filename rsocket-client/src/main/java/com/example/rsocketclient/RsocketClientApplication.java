@@ -45,7 +45,8 @@ public class RsocketClientApplication {
       localhost
           .route("greeting")
           .metadata(credentials, BASIC_AUTHENTICATION_MIME_TYPE)
-          .retrieveMono(String.class)
+          .data(new GreetingRequest("Rob"))
+          .retrieveMono(GreetingResponse.class)
           .subscribe(gr -> log.info("secure response: " + gr));
     };
   }

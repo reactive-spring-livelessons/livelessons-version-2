@@ -107,8 +107,8 @@ class GreetingService {
   }
 
   @MessageMapping("greeting")
-  Mono<String> greeting(String name) {
-    return Mono.just(greet(name).getMessage());
+  Mono<GreetingResponse> greeting(GreetingRequest name) {
+    return Mono.just(greet(name.getName()));
   }
 
   @MessageMapping("greetings")
