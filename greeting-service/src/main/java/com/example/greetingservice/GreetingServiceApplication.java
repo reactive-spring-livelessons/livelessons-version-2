@@ -127,7 +127,6 @@ class GreetingService {
     log.error(iae);
     return Mono.just("OoOps!");
   }
-
 }
 
 //@Profile( "rsocket-security")
