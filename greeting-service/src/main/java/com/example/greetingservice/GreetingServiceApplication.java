@@ -104,16 +104,16 @@ class GreetingService {
     return new GreetingResponse("Hello " + name + " @ " + Instant.now());
   }
 
+  @MessageMapping("greeting")
+  Mono<String> greeting(String name) {
+    return Mono.just(greet(name).getMessage());
+  }
+
   @MessageMapping("greetings")
   Flux<GreetingResponse> greetings(GreetingRequest request) {
     return Flux
         .fromStream(Stream.generate(() -> greet(request.getName())))
         .delayElements(Duration.ofSeconds(1));
-  }
-
-  @MessageMapping("greeting")
-  Mono<GreetingResponse> greeting(GreetingRequest request) {
-    return Mono.just(greet(request.getName()));
   }
 
   @MessageMapping("error-signal")
@@ -129,7 +129,6 @@ class GreetingService {
   }
 }
 
-//@Profile( "rsocket-security")
 @EnableRSocketSecurity
 @Configuration
 class RSocketSecurityConfiguration {

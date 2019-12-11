@@ -11,7 +11,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.PayloadApplicationEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.rsocket.RSocketRequester;
-import org.springframework.messaging.rsocket.RSocketStrategies;
 import org.springframework.security.rsocket.metadata.BasicAuthenticationEncoder;
 import org.springframework.security.rsocket.metadata.UsernamePasswordMetadata;
 
@@ -27,10 +26,8 @@ public class RsocketClientApplication {
 
   @Bean
   RSocketRequester rSocketRequester(RSocketRequester.Builder requester) {
-    UsernamePasswordMetadata credentials = new UsernamePasswordMetadata("user", "password");
     return requester
         .rsocketStrategies(builder -> builder.encoder(new BasicAuthenticationEncoder()))
-        .setupMetadata(credentials, BASIC_AUTHENTICATION_MIME_TYPE)
         .connectTcp("localhost", 8888)
         .block();
   }
@@ -42,12 +39,12 @@ public class RsocketClientApplication {
       localhost
           .route("greeting")
           .metadata(credentials, BASIC_AUTHENTICATION_MIME_TYPE)
-          .retrieveMono(GreetingResponse.class)
-          .subscribe(gr -> log.info("secure response: " + gr.getMessage()));
+          .retrieveMono(String.class)
+          .subscribe(gr -> log.info("secure response: " + gr));
     };
   }
 
-  //  @Bean
+  @Bean
   ApplicationListener<ApplicationReadyEvent> client(RSocketRequester.Builder builder) {
     return event ->
         builder
@@ -56,10 +53,10 @@ public class RsocketClientApplication {
             .route("greetings")
             .data(new GreetingRequest("Livelessons"))
             .retrieveFlux(GreetingResponse.class)
-            .subscribe(gr -> log.info("client: " + gr.getMessage()));
+            .subscribe(gr -> log.info("rsocket client: " + gr.getMessage()));
   }
 
-  //  @Bean
+  @Bean
   ApplicationListener<PayloadApplicationEvent<RSocketRequester>> gatewayClient(BrokerClient client) {
     return event ->
         event
@@ -68,7 +65,7 @@ public class RsocketClientApplication {
             .metadata(client.forwarding("greetings-service"))
             .data(new GreetingRequest("World"))
             .retrieveFlux(GreetingResponse.class)
-            .subscribe(gr -> log.info("rsocket client: " + gr.getMessage()));
+            .subscribe(gr -> log.info("gateway rsocket client: " + gr.getMessage()));
   }
 }
 
